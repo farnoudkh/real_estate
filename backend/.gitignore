@@ -1,0 +1,12 @@
+# Virtual environnement
+venv/
+# Django #
+backend/*.log
+backend/*.pot
+backend/*.pyc
+backend/__pycache__/
+auth/__pycache__/
+auth/migrations/
+db.sqlite3
+media
+backend/.env
