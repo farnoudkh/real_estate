@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 import environ 
 env = environ.Env()
@@ -43,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'users',
-    'knox'
+    'knox',
+    'realtors',
 ]
 
 MIDDLEWARE = [
@@ -63,9 +65,9 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-AUTHENTICATION_BACKENDS = [
-    'users.auth_backend.EmailAuthBackend'
-]
+# AUTHENTICATION_BACKENDS = [
+#     'users.auth_backend.EmailAuthBackend'
+# ]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -142,6 +144,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_ROOT = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
