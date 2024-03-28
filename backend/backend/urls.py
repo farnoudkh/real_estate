@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include("users.urls")),
     path('api/auth/', include("knox.urls")),
-    path('api/realtors/', include("realtors.urls"))
+    path('api/realtors/', include("realtors.urls")),
+    path('api/listings/', include("listings.urls")),
+
 ]

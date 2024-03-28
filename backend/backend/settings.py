@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users',
     'knox',
     'realtors',
+    'listings',
 ]
 
 MIDDLEWARE = [
