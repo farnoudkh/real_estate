@@ -5,10 +5,16 @@ backend/*.log
 backend/*.pot
 backend/*.pyc
 backend/__pycache__/
+
 users/__pycache__/
 users/migrations/
+
 realtors/__pycache__
 realtors/migrations/
+
+listings/__pycache__
+listings/migrations/
+
 db.sqlite3
 media
 backend/.env
