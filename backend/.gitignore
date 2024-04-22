@@ -18,3 +18,5 @@ listings/migrations/
 db.sqlite3
 media
 backend/.env
+
+../.DS_Store
