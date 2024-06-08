@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Listing
+from realtors.serializers import RealtorSerializer
 
 class ListingSerializer(serializers.ModelSerializer):
     publish_date = serializers.DateField(format='%d/%m/%Y')
@@ -10,6 +11,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
 class listingDetailSerializer(serializers.ModelSerializer):
     publish_date = serializers.DateField(format='%d/%m/%Y')
+    realtor = RealtorSerializer(read_only=True)
 
     class Meta:
         model = Listing
