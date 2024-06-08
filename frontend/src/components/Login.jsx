@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    AxiosInstance.post(`login/`, {
+    AxiosInstance.post(`api/users/login/`, {
       email: data.email,
       password: data.password,
     })

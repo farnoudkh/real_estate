@@ -19,7 +19,7 @@ const Property = () => {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center mt-5">
       {properties.map(property => (
         <div key={property.slug} className="m-4 transform transition-transform duration-300 ease-in-out hover:scale-110">
           <Link to={`/listings/${property.slug}`}>
