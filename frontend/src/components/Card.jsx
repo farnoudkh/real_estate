@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faBath} from '@fortawesome/free-solid-svg-icons'
 import {faBed} from '@fortawesome/free-solid-svg-icons'
+import {faHome} from '@fortawesome/free-solid-svg-icons'
 
 
 const Card = (props) => {
@@ -18,6 +19,7 @@ const Card = (props) => {
             </div>
             <div className="px-6 pt-4 pb-2 items-center">
                 <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                    <FontAwesomeIcon icon={faHome} className="mr-1"/>
                     {props.surface}m²
                 </span>
                 <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
@@ -29,7 +31,6 @@ const Card = (props) => {
                 </span>
                 <span className="text-xl font-semibold text-gray-300 mr-1">|</span>            
                 <span className="text-sm font-semibold text-gray-700">{props.type}</span>
-
             </div>
         </div>
     )

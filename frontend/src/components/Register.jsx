@@ -9,7 +9,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        AxiosInstance.post(`register/`, {
+        AxiosInstance.post(`api/users/register/`, {
             last_name: data.last_name,
             first_name: data.first_name,
             email: data.email,
