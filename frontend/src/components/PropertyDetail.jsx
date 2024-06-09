@@ -8,7 +8,6 @@ import {faBath} from '@fortawesome/free-solid-svg-icons'
 import {faBed} from '@fortawesome/free-solid-svg-icons'
 import {faHome} from '@fortawesome/free-solid-svg-icons'
 import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-
 import  '../styles/PropertyDetail.css'
 
 

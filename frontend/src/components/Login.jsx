@@ -2,11 +2,12 @@ import AxiosInstance from "./AxiosInstance";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { handleSubmit, register } = useForm();
- 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
@@ -16,6 +17,7 @@ const Login = () => {
     })
     .then((response) => {
       localStorage.setItem('Token', response.data.token)
+      login(response.data.user);
       navigate(`/home`);
     })
     .catch((error) => {
