@@ -7,7 +7,7 @@ User = get_user_model()
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'last_name', 'first_name', 'password']
+        fields = ['id', 'email', 'last_name', 'first_name', 'password', 'role']
         extra_kwargs = { 'password': {'write_only': True}}
     
     def create(self, validated_data):
@@ -21,6 +21,8 @@ class LoginSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        user = User.objects.get(email=instance.email)
+        ret['role'] = user.role 
         ret.pop('password', None)
         return ret
 
