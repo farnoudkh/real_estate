@@ -12,6 +12,9 @@ export default {
         'lg': '1024px',  // Large screens (small laptops)
         'xl': '1280px',  // Extra large screens (laptops and desktops)
       },
+      boxShadow : {
+        'custom': '2px 16px 0 rgba(0, 0, 0, 0.2)',
+      }
     },
   },
   plugins: [],

@@ -1,7 +1,9 @@
+import Footer from "./Footer"
+
 const About = () => {
     return (
         <div>
-            This is the about page
+            <Footer />
         </div>
     )
 }

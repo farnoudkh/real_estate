@@ -16,3 +16,10 @@ class ListingView(RetrieveAPIView):
     queryset = Listing.objects.order_by('-publish_date').filter(is_published=True)
     serializer_class = listingDetailSerializer
     lookup_field = 'slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        listing = self.get_object()
+        context['latitude'] = listing.latitude
+        context['longitude'] = listing.longitude
+        return context

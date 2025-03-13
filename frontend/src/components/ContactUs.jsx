@@ -1,7 +1,9 @@
+import Footer from "./Footer"
+
 const ContactUs = () => {
     return (
         <div>
-            This is the ContactUs page
+            <Footer />
         </div>
     )
 }
