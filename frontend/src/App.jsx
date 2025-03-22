@@ -4,12 +4,11 @@ import Register from './components/Register'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import About from './components/About'
-import {Routes, Route, useLocation} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import ContactUs from './components/ContactUs'
 import PropertyDetail from './components/PropertyDetail'
 import Properties from './components/Properties'
 import { AuthProvider } from "./components/AuthContext";
-
 
 function App() {
  
