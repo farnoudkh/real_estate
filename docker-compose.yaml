@@ -17,7 +17,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: django_backend
+    container_name: real_estate_backend
     env_file:
       - .env
     volumes:
@@ -31,7 +31,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: react_frontend
+    container_name: real_estate_frontend
     volumes:
       - ./frontend:/app
       - /app/node_modules

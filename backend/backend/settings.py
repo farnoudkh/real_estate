@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'knox',
     'realtors',
     'listings',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -92,6 +93,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
 
 

@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import AxiosInstance from './AxiosInstance';
+import React from 'react';
 import Card from './Card';
 import { Link } from 'react-router-dom';
 
-const Property = () => {
-  const [properties, setProperties] = useState([]);
-
-  useEffect(() => {
-    // Fetch property data from backend
-    AxiosInstance.get('/api/listings')
-      .then(response => {
-        setProperties(response.data);
-        console.log(response)
-      })
-      .catch(error => {
-        console.error('Error fetching properties:', error);
-      });
-  }, []);
-
+const Property = ({ properties }) => {
   return (
     <div className="flex flex-wrap justify-center mt-5">
       {properties.map(property => (
