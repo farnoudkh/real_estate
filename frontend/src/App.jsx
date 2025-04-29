@@ -9,6 +9,7 @@ import ContactUs from './components/ContactUs'
 import PropertyDetail from './components/PropertyDetail'
 import Properties from './components/Properties'
 import { AuthProvider } from "./components/AuthContext";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
  
@@ -16,6 +17,7 @@ function App() {
     <AuthProvider>
       <>
           <Navbar/>
+          <ScrollToTop />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />                  

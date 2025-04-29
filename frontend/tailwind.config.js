@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
       screens: {
         'sm': '640px',   // Small screens (mobile phones)
         'md': '768px',   // Medium screens (tablets)
@@ -14,7 +18,7 @@ export default {
       },
       boxShadow : {
         'custom': '2px 16px 0 rgba(0, 0, 0, 0.2)',
-      }
+      },
     },
   },
   plugins: [],

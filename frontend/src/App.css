@@ -1,0 +1,9 @@
+/* Appliquer Montserrat pour les titres */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Appliquer Poppins pour le corps du texte */
+body, p, span, li {
+    font-family: 'Poppins', sans-serif;
+}
