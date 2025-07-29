@@ -2,22 +2,39 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AxiosInstance from './AxiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { handleSubmit, register } = useForm();
     const navigate = useNavigate();
+    const { login: authLogin } = useAuth();
 
     const onSubmit = (data) => {
         AxiosInstance.post('api/users/login/', {
             email: data.email,
             password: data.password,
         })
-        .then(() => {
-            navigate('/');
+        .then((response) => {
+            const { user, token } = response.data;
+            authLogin({...user, token});
+            navigate('/home');
         })
         .catch((error) => {
-            setErrorMessage(error.response.data.error);
+            if (error.response && error.response.data && error.response.data.error) {
+                if (typeof error.response.data.error === 'string') {
+                    setErrorMessage(error.response.data.error);
+                } else if (typeof error.response.data.error === 'object') {
+                    const errorMessages = Object.values(error.response.data.error).flat();
+                    setErrorMessage(errorMessages.join(' '));
+                } else {
+                    setErrorMessage("An unexpected error occurred during login.");
+                }
+            } else if (error.message) {
+                setErrorMessage(`Network or server error: ${error.message}`);
+            } else {
+                setErrorMessage("An unknown error occurred. Please try again.");
+            }
         });
     };
 
@@ -29,7 +46,7 @@ const Login = () => {
                     Welcome back to Lumina Reality! Dive into thousands of property listings tailored to your needs, 
                     whether you're looking to buy or rent.
                 </p>
-                {errorMessage && <p className="text-red-500 bg-red-100 p-2 rounded mt-4">{errorMessage}</p>}
+                {errorMessage && <p className="text-red-500 bg-red-100 p-2 rounded mt-4 mb-4">{errorMessage}</p>}
                 <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-[rgb(223,198,103)]">Email Address</label>
