@@ -71,20 +71,6 @@ jobs:
           source: "frontend/dist"
           target: "${{ secrets.VPS_APP_PATH }}/frontend/"
 
-      # - name: 📤 Upload Docker Compose and Nginx config to VPS
-      #   uses: appleboy/scp-action@v0.1.4
-      #   with:
-      #     host: ${{ secrets.VPS_HOST }}
-      #     username: ${{ secrets.VPS_USER }}
-      #     key: ${{ secrets.VPS_KEY }}
-      #     source: |
-      #       docker-compose.prod.yaml
-      #       nginx_realestate/nginx.conf
-      #       backend/Dockerfile.prod
-      #       frontend/Dockerfile.prod
-      #       backend/entrypoint.sh # Si ce fichier est nécessaire pour le backend
-      #       init.sql # Si ce fichier est nécessaire pour la DB
-      #     target: "${{ secrets.VPS_APP_PATH }}/"
       - name: 📤 Transfer all project files to VPS using rsync
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -95,8 +81,9 @@ jobs:
             sudo mkdir -p ${{ secrets.VPS_APP_PATH }}
             sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ secrets.VPS_APP_PATH }}
             sudo chmod -R 755 ${{ secrets.VPS_APP_PATH }}
-
+            
             cd ${{ secrets.VPS_APP_PATH }}
+
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
               ${{ github.workspace }}/backend/ ./backend/
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
@@ -104,6 +91,7 @@ jobs:
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
               ${{ github.workspace }}/nginx_realestate/ ./nginx_realestate/
             
+            # Pour les fichiers à la racine du dépôt
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
               ${{ github.workspace }}/docker-compose.prod.yaml ./docker-compose.prod.yaml
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
