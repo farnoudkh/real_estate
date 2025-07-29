@@ -21,7 +21,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > backend/.env.prod
           echo "DEBUG=False" >> backend/.env.prod
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> backend/.env.prod
-          echo "POSTGRES_USER=${{ secrets.POSTTRES_USER }}" >> backend/.env.prod
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> backend/.env.prod
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> backend/.env.prod
           echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> backend/.env.prod
           echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> backend/.env.prod
