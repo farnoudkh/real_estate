@@ -85,45 +85,31 @@ jobs:
       #       backend/entrypoint.sh # Si ce fichier est nécessaire pour le backend
       #       init.sql # Si ce fichier est nécessaire pour la DB
       #     target: "${{ secrets.VPS_APP_PATH }}/"
-      - name: 📤 Upload Docker Compose and Nginx config to VPS
-        uses: appleboy/scp-action@v0.1.4
+      - name: 📤 Transfer all project files to VPS using rsync
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
-          source: |
-            docker-compose.prod.yaml # Fichier à la racine
-            init.sql
-          target: "${{ secrets.VPS_APP_PATH }}/"
+          script: |
+            sudo mkdir -p ${{ secrets.VPS_APP_PATH }}
+            sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ secrets.VPS_APP_PATH }}
+            sudo chmod -R 755 ${{ secrets.VPS_APP_PATH }}
 
-      - name: 📤 Upload Backend Dockerfile and Entrypoint to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
-          source: |
-            backend/Dockerfile.prod
-            backend/entrypoint.sh
-          target: "${{ secrets.VPS_APP_PATH }}/backend/"
-
-      - name: 📤 Upload Frontend Dockerfile to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
-          source: "frontend/Dockerfile.prod"
-          target: "${{ secrets.VPS_APP_PATH }}/frontend/"
-
-      - name: 📤 Upload Nginx config folder to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
-          source: "nginx_realestate/nginx.conf"
-          target: "${{ secrets.VPS_APP_PATH }}/nginx_realestate/"
+            cd ${{ secrets.VPS_APP_PATH }}
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+              ${{ github.workspace }}/backend/ ./backend/
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+              ${{ github.workspace }}/frontend/ ./frontend/
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+              ${{ github.workspace }}/nginx_realestate/ ./nginx_realestate/
+            
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+              ${{ github.workspace }}/docker-compose.prod.yaml ./docker-compose.prod.yaml
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+              ${{ github.workspace }}/init.sql ./init.sql
+            
+            echo "All files successfully transfered."
           
       - name: 🔐 SSH to VPS & deploy
         uses: appleboy/ssh-action@v0.1.8
