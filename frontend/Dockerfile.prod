@@ -2,13 +2,13 @@ FROM node:18 as builder
 
 WORKDIR /app
 
-COPY .env.prod .env
-
 COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN npm run build
+COPY .env.production .env.production
+
+RUN npm run build -- --mode production
 
 FROM nginx:alpine
 
