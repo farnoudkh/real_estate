@@ -82,20 +82,22 @@ jobs:
             sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ secrets.VPS_APP_PATH }}
             sudo chmod -R 755 ${{ secrets.VPS_APP_PATH }}
             
+            cd ${{ github.workspace }}
+
+            # (Ce cd est pour le côté destination de rsync)
             cd ${{ secrets.VPS_APP_PATH }}
 
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ${{ github.workspace }}/backend/ ./backend/
+              ./backend/ ./backend/
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ${{ github.workspace }}/frontend/ ./frontend/
+              ./frontend/ ./frontend/
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ${{ github.workspace }}/nginx_realestate/ ./nginx_realestate/
+              ./nginx_realestate/ ./nginx_realestate/
             
-            # Pour les fichiers à la racine du dépôt
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ${{ github.workspace }}/docker-compose.prod.yaml ./docker-compose.prod.yaml
+              ./docker-compose.prod.yaml ./docker-compose.prod.yaml
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ${{ github.workspace }}/init.sql ./init.sql
+              ./init.sql ./init.sql
             
             echo "All files successfully transfered."
           
