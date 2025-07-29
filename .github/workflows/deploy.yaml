@@ -81,11 +81,11 @@ jobs:
             sudo mkdir -p ${{ secrets.VPS_APP_PATH }}
             sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ secrets.VPS_APP_PATH }}
             sudo chmod -R 755 ${{ secrets.VPS_APP_PATH }}
-            
+
             cd ${{ github.workspace }}
 
-            # (Ce cd est pour le côté destination de rsync)
             cd ${{ secrets.VPS_APP_PATH }}
+
 
             rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
               ./backend/ ./backend/
