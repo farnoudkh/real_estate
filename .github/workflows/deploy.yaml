@@ -69,8 +69,8 @@ jobs:
             ./backend/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/backend/
           
           rsync -avz --delete \
-            -e "ssh -o StrictHostKeyChecking=no" \
-            ./frontend/dist/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/frontend/dist/
+            ./frontend/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/frontend/
+
           
           rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
