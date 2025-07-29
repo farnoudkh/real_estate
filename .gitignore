@@ -19,4 +19,8 @@ db.sqlite3
 media
 backend/.env
 
-../.DS_Store
+**/.DS_Store
+**/__pycache__/*
+
+**/.env
+backend/users/__pycache__/
