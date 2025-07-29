@@ -91,10 +91,6 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            # Ces lignes pourraient être nécessaires si --delete n'est pas utilisé partout
-            # et que tu as d'autres fichiers à nettoyer spécifiquement.
-            # sudo rm -rf ${{ secrets.VPS_APP_PATH }}/backend/.env.prod
-            # sudo rm -rf ${{ secrets.VPS_APP_PATH }}/frontend/dist
             echo "Nettoyage manuel si nécessaire."
 
       - name: 🔐 SSH to VPS & deploy
