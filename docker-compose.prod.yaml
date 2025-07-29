@@ -3,7 +3,7 @@ services:
     image: postgres:14
     container_name: realestate_db
     env_file:
-      - backend/.env.prod
+      - backend/.env.production
     volumes:
       - postgres_data_realestate:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile.prod
     container_name: realestate_backend
     env_file:
-      - backend/.env.prod
+      - backend/.env.production
     environment:
       - DJANGO_ENV=production
     volumes:
