@@ -30,37 +30,30 @@ class RegisterViewset(viewsets.ViewSet):
         
 class LoginViewset(viewsets.ViewSet):
     permission_classes = [permissions.AllowAny]
-    # This serializer_class is primarily for `data=request.data` validation
     serializer_class = LoginSerializer
 
     def create(self, request):
-        # 1. Validate incoming login data using LoginSerializer
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True) # Automatically returns 400 if invalid
+        serializer.is_valid(raise_exception=True)
 
         email = serializer.validated_data["email"]
         password = serializer.validated_data["password"]
 
-        # 2. Authenticate the user
         user = authenticate(request, email=email, password=password)
 
         if user:
-            # 3. Create authentication token (Knox)
             _, token = AuthToken.objects.create(user)
 
-            # 4. SERIALIZE THE AUTHENTICATED USER OBJECT FOR THE RESPONSE
-            # Use the new UserDetailSerializer to correctly serialize the 'user' object
-            user_data_for_frontend = UserDetailSerializer(user).data # <-- CRUCIAL LINE
+            user_data_for_frontend = UserDetailSerializer(user).data
 
             return Response(
                 {
-                    "user": user_data_for_frontend, # Send the properly serialized user data
+                    "user": user_data_for_frontend,
                     "token": token,
                 },
                 status=status.HTTP_200_OK,
             )
         else:
-            # If authentication (email/password check) fails
             return Response(
                 {"error": "Invalid credentials. Please check your email and password."},
                 status=status.HTTP_401_UNAUTHORIZED,
