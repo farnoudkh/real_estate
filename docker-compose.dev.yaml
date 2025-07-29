@@ -3,9 +3,9 @@ version: '3'
 services:
   db:
     image: postgres
-    container_name: postgres_react_estate
+    container_name: realestate_db
     env_file:
-      - .env
+      - ./backend/.env.dev
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -16,10 +16,10 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
-    container_name: real_estate_backend
+      dockerfile: Dockerfile.dev
+    container_name: realestate_backend
     env_file:
-      - .env
+      - ./backend/.env.dev
     volumes:
       - ./backend:/app
     ports:
@@ -30,8 +30,8 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    container_name: real_estate_frontend
+      dockerfile: Dockerfile.dev
+    container_name: realestate_frontend
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -39,6 +39,8 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    env_file:
+      - ./frontend/.env.dev
 
 volumes:
   postgres_data:
