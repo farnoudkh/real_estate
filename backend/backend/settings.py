@@ -37,9 +37,6 @@ if ENV == 'production':
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-print("ENV =", ENV)
-print("ALLOWED_HOSTS =", ALLOWED_HOSTS)
-
 # Application definition
 
 INSTALLED_APPS = [
