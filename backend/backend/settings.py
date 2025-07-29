@@ -13,8 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 import environ 
+
+ENV = os.getenv('DJANGO_ENV', 'development')
+
 env = environ.Env()
-environ.Env.read_env()
+env.read_env(Path(__file__).resolve().parent.parent / '.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,8 +32,10 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
-
+if ENV == 'production':
+    ALLOWED_HOSTS = ['farnoudkhaboshan.com', 'www.farnoudkhaboshan.com']
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -47,6 +52,7 @@ INSTALLED_APPS = [
     'knox',
     'realtors',
     'listings',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -61,14 +67,14 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:3000",
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# AUTHENTICATION_BACKENDS = [
-#     'users.auth_backend.EmailAuthBackend'
-# ]
+AUTHENTICATION_BACKENDS = [
+    'users.auth_backend.EmailAuthBackend'
+]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -92,6 +98,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
 
 
@@ -146,10 +154,28 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/realestate/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

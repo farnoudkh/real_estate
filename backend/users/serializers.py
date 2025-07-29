@@ -4,12 +4,10 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-
-
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'last_name', 'first_name', 'password']
+        fields = ['id', 'email', 'last_name', 'first_name', 'password', 'role']
         extra_kwargs = { 'password': {'write_only': True}}
     
     def create(self, validated_data):
@@ -18,12 +16,20 @@ class RegisterSerializer(serializers.ModelSerializer):
     
 
 class LoginSerializer(serializers.Serializer):
+    """
+    This serializer is ONLY for validating input (email and password).
+    It should NOT have a to_representation method for user output.
+    """
     email = serializers.EmailField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
-    def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        ret.pop('password', None)
-        return ret
+class UserDetailSerializer(serializers.ModelSerializer):
+    """
+    This serializer is used to transform a CustomUser model instance
+    into a dictionary for API responses.
+    """
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'role']
 
     
