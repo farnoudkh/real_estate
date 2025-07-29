@@ -21,7 +21,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > backend/.env.prod
           echo "DEBUG=False" >> backend/.env.prod
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> backend/.env.prod
-          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> backend/.env.prod
+          echo "POSTGRES_USER=${{ secrets.POSTTRES_USER }}" >> backend/.env.prod
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> backend/.env.prod
           echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> backend/.env.prod
           echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> backend/.env.prod
@@ -34,73 +34,69 @@ jobs:
       - name: 🧱 Build Vite frontend
         run: |
           cd frontend
-          npm cache clean --force || true # Utiliser || true pour éviter que l'étape échoue si le cache est vide
-          rm -rf node_modules || true # S'assurer que ça ne bloque pas si le dossier n'existe pas
+          npm cache clean --force || true
+          rm -rf node_modules || true
           npm install
-          npm run build # Vite construit dans 'dist' par défaut
+          npm run build
 
       - name: 🔒 Correct permissions for dist on CI runner
         run: |
           sudo chmod -R 755 frontend/dist
 
-      - name: 🧹 Clean old project files/folders on VPS
+      - name: Set up SSH for rsync/ssh-action
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_KEY }}
+          no-cache: true
+
+      - name: 📁 Create base project directories on VPS
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            sudo rm -rf ${{ secrets.VPS_APP_PATH }}/backend/.env.prod
-            sudo rm -rf ${{ secrets.VPS_APP_PATH }}/frontend/dist
-
-      - name: 📤 Upload backend .env.prod to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
-          source: "backend/.env.prod"
-          target: "${{ secrets.VPS_APP_PATH }}/backend/"
-
-      - name: 📤 Upload frontend dist to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
-          source: "frontend/dist"
-          target: "${{ secrets.VPS_APP_PATH }}/frontend/"
-
-      - name: 📤 Transfer all project files to VPS using rsync
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
-          script: |
-            sudo mkdir -p ${{ secrets.VPS_APP_PATH }}
+            sudo mkdir -p ${{ secrets.VPS_APP_PATH }}/backend
+            sudo mkdir -p ${{ secrets.VPS_APP_PATH }}/frontend/dist # Crée aussi dist car on l'uploadera
+            sudo mkdir -p ${{ secrets.VPS_APP_PATH }}/nginx_realestate
             sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ secrets.VPS_APP_PATH }}
             sudo chmod -R 755 ${{ secrets.VPS_APP_PATH }}
 
-            cd ${{ github.workspace }}
-
-            cd ${{ secrets.VPS_APP_PATH }}
-
-
-            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ./backend/ ./backend/
-            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ./frontend/ ./frontend/
-            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ./nginx_realestate/ ./nginx_realestate/
-            
-            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ./docker-compose.prod.yaml ./docker-compose.prod.yaml
-            rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-              ./init.sql ./init.sql
-            
-            echo "All files successfully transfered."
+      - name: 📤 Transfer all project files to VPS using rsync
+        run: |
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./backend/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/backend/
           
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./frontend/dist/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/frontend/dist/
+          
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./nginx_realestate/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/nginx_realestate/
+          
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./docker-compose.prod.yaml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/docker-compose.prod.yaml
+          
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./init.sql ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/init.sql
+
+      - name: 🧹 Clean specific old files on VPS
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            # Ces lignes pourraient être nécessaires si --delete n'est pas utilisé partout
+            # et que tu as d'autres fichiers à nettoyer spécifiquement.
+            # sudo rm -rf ${{ secrets.VPS_APP_PATH }}/backend/.env.prod
+            # sudo rm -rf ${{ secrets.VPS_APP_PATH }}/frontend/dist
+            echo "Nettoyage manuel si nécessaire."
+
       - name: 🔐 SSH to VPS & deploy
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -108,14 +104,17 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            cd ${{ secrets.VPS_APP_PATH }}
-            mkdir -p backend frontend nginx_realestate
+            cd ${{ secrets.VPS_APP_PATH }} # Navigue vers la racine du projet sur le VPS
+
             docker compose -f docker-compose.prod.yaml down --remove-orphans || true
             docker compose -f docker-compose.prod.yaml up -d --build
+
             docker image prune -f
+
             docker compose -f docker-compose.prod.yaml exec -T backend python manage.py migrate --noinput
             docker compose -f docker-compose.prod.yaml exec -T backend python manage.py collectstatic --noinput
-            echo "Success deploy !" # Message de fin de déploiement Docker
+
+            echo "Success deploy !"
 
       - name: 🔁 Reload Nginx on VPS
         uses: appleboy/ssh-action@v0.1.8
