@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 import environ 
+
+ENV = os.getenv('DJANGO_ENV', 'development')
+
 env = environ.Env()
 env.read_env(Path(__file__).resolve().parent.parent / '.env')
 
@@ -29,8 +32,10 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-
+if ENV == 'production':
+    ALLOWED_HOSTS = ['farnoudkhaboshan.com', 'www.farnoudkhaboshan.com']
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -67,9 +72,9 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# AUTHENTICATION_BACKENDS = [
-#     'users.auth_backend.EmailAuthBackend'
-# ]
+AUTHENTICATION_BACKENDS = [
+    'users.auth_backend.EmailAuthBackend'
+]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -149,7 +154,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/realestate/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type

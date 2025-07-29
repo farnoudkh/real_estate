@@ -4,8 +4,8 @@ import Property from './Property';
 import AxiosInstance from './AxiosInstance';
 
 const Home = () => {
-  const [properties, setProperties] = useState([]);  // Liste de toutes les propriétés
-  const [filteredProperties, setFilteredProperties] = useState([]); // Liste des propriétés filtrées
+  const [properties, setProperties] = useState([]);
+  const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchCriteria, setSearchCriteria] = useState({
     city: '',
@@ -29,7 +29,6 @@ const Home = () => {
     fetchProperties();
   }, []);
 
-  // Options pour les filtres
   const propertyTypes = [
     { value: '', label: 'Any Type' },
     { value: 'House', label: 'House' },

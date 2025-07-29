@@ -6,4 +6,8 @@ router = DefaultRouter()
 router.register('register', RegisterViewset, basename='register')
 router.register('login', LoginViewset, basename='login')
 
-urlpatterns = router.urls
+
+urlpatterns = [
+    path('logout/', LogoutViewset.as_view({'post': 'create'}), name='logout'),
+    *router.urls,
+]
