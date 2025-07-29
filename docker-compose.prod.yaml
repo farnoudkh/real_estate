@@ -6,10 +6,6 @@ services:
     container_name: realestate_db
     env_file:
       - backend/.env.prod
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data_realestate:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
