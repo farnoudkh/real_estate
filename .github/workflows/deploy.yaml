@@ -52,10 +52,6 @@ jobs:
           script: |
             sudo rm -rf ${{ secrets.VPS_APP_PATH }}/backend/.env.prod
             sudo rm -rf ${{ secrets.VPS_APP_PATH }}/frontend/dist
-            # Ajoutez ici d'autres dossiers/fichiers que vous voulez nettoyer avant d'uploader
-            # Par exemple, si vous voulez nettoyer tout le dossier frontend/ ou backend/
-            # sudo rm -rf ${{ secrets.VPS_APP_PATH }}/frontend/*
-            # sudo rm -rf ${{ secrets.VPS_APP_PATH }}/backend/*
 
       - name: 📤 Upload backend .env.prod to VPS
         uses: appleboy/scp-action@v0.1.4
@@ -75,6 +71,20 @@ jobs:
           source: "frontend/dist"
           target: "${{ secrets.VPS_APP_PATH }}/frontend/"
 
+      # - name: 📤 Upload Docker Compose and Nginx config to VPS
+      #   uses: appleboy/scp-action@v0.1.4
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_USER }}
+      #     key: ${{ secrets.VPS_KEY }}
+      #     source: |
+      #       docker-compose.prod.yaml
+      #       nginx_realestate/nginx.conf
+      #       backend/Dockerfile.prod
+      #       frontend/Dockerfile.prod
+      #       backend/entrypoint.sh # Si ce fichier est nécessaire pour le backend
+      #       init.sql # Si ce fichier est nécessaire pour la DB
+      #     target: "${{ secrets.VPS_APP_PATH }}/"
       - name: 📤 Upload Docker Compose and Nginx config to VPS
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -82,14 +92,39 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           source: |
-            docker-compose.prod.yaml
-            nginx_realestate/nginx.conf
-            backend/Dockerfile.prod
-            frontend/Dockerfile.prod
-            backend/entrypoint.sh # Si ce fichier est nécessaire pour le backend
-            init.sql # Si ce fichier est nécessaire pour la DB
+            docker-compose.prod.yaml # Fichier à la racine
+            init.sql
           target: "${{ secrets.VPS_APP_PATH }}/"
 
+      - name: 📤 Upload Backend Dockerfile and Entrypoint to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          source: |
+            backend/Dockerfile.prod
+            backend/entrypoint.sh
+          target: "${{ secrets.VPS_APP_PATH }}/backend/"
+
+      - name: 📤 Upload Frontend Dockerfile to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          source: "frontend/Dockerfile.prod"
+          target: "${{ secrets.VPS_APP_PATH }}/frontend/"
+
+      - name: 📤 Upload Nginx config folder to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          source: "nginx_realestate/nginx.conf"
+          target: "${{ secrets.VPS_APP_PATH }}/nginx_realestate/"
+          
       - name: 🔐 SSH to VPS & deploy
         uses: appleboy/ssh-action@v0.1.8
         with:
