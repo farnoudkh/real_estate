@@ -6,7 +6,6 @@ COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-COPY .env.production .env
 
 RUN npm run build -- --mode production
 
