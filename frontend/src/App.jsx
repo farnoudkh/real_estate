@@ -5,7 +5,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
 import About from './components/About';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Import BrowserRouter and Navigate
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ContactUs from './components/ContactUs';
 import PropertyDetail from './components/PropertyDetail';
 import Properties from './components/Properties';
@@ -14,8 +14,8 @@ import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   console.log("✅ App rendering");
+  console.log('VITE_API_BASE_URL =', import.meta.env.VITE_API_BASE_URL)
   return (
-    <Router basename="/realestate">
       <AuthProvider>
         <>
           <Navbar/>
@@ -32,7 +32,6 @@ function App() {
           </Routes>
         </>
       </AuthProvider>
-    </Router>
   );
 }
 
