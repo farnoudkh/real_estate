@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await AxiosInstance.get('/api/listings');
+        const response = await AxiosInstance.get('/listings');
         setProperties(response.data);
         setFilteredProperties(response.data);
       } catch (error) {
