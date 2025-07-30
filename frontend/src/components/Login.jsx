@@ -11,7 +11,7 @@ const Login = () => {
     const { login: authLogin } = useAuth();
 
     const onSubmit = (data) => {
-        AxiosInstance.post('api/users/login/', {
+        AxiosInstance.post('/users/login/', {
             email: data.email,
             password: data.password,
         })
