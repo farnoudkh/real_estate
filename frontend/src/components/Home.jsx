@@ -18,9 +18,19 @@ const Home = () => {
     const fetchProperties = async () => {
       try {
         const response = await AxiosInstance.get('/listings');
-        setProperties(response.data);
-        setFilteredProperties(response.data);
+
+        const data = response.data;
+        if (Array.isArray(data)) {
+          setProperties(data);
+          setFilteredProperties(data);
+        } else {
+          setProperties([]);
+          setFilteredProperties([]);
+        }
+
       } catch (error) {
+        setProperties([]);
+        setFilteredProperties([]);
       } finally {
         setLoading(false);
       }
@@ -28,6 +38,7 @@ const Home = () => {
 
     fetchProperties();
   }, []);
+
 
   const propertyTypes = [
     { value: '', label: 'Any Type' },
