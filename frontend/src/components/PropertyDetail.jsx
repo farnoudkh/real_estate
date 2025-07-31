@@ -15,7 +15,7 @@ const PropertyDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    AxiosInstance.get(`/api/listings/${slug}`)
+    AxiosInstance.get(`listings/${slug}`)
       .then(response => setProperty(response.data))
       .catch(error => console.error('Error fetching property:', error));
   }, [slug]);
