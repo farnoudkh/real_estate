@@ -9,6 +9,19 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Helmet } from 'react-helmet';
 
+import L from 'leaflet';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
 const PropertyDetail = () => {
   const [property, setProperty] = useState([]);
   const { slug } = useParams();
@@ -127,34 +140,34 @@ const PropertyDetail = () => {
             </div>
 
             <div className="p-4">
-                <div className="bg-[rgb(6,11,34)] text-[rgb(223,198,103)] rounded-xl shadow-lg overflow-hidden border border-[rgb(223,198,103)] w-auto max-w-md mx-auto">
-                    <div className="w-full h-40 overflow-hidden">
-                    <img
-                        className="w-full h-full object-cover"
-                        src="https://media.istockphoto.com/id/1149958175/photo/modern-skyscrapers-in-midtown-manhattan.webp?b=1&s=170667a&w=0&k=20&c=GGpQK-UrXnhe25zSk4yNixalZfZoYGcOX-Q65zx5wkA="
-                        alt="Agence"
-                    />
-                    </div>
-                    <div className="p-6">
-                    <h2 className="text-xl font-bold text-center mb-4">Realtor Information</h2>
-                    {property.realtor && (
-                        <div className="space-y-3">
-                        <div className="flex items-center">
-                            <FontAwesomeIcon icon={faUser} className="mr-2" />
-                            <span>{property.realtor.first_name} {property.realtor.last_name}</span>
-                        </div>
-                        <div className="flex items-center">
-                            <FontAwesomeIcon icon={faPhone} className="mr-2" />
-                            <span>{property.realtor.phone}</span>
-                        </div>
-                        <div className="flex items-center">
-                            <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
-                            <span><a href={`mailto:${property.realtor.email}`}>{property.realtor.email}</a></span>
-                        </div>
-                        </div>
-                    )}
-                    </div>
+              <div className="bg-[rgb(6,11,34)] text-[rgb(223,198,103)] rounded-xl shadow-lg overflow-hidden border border-[rgb(223,198,103)] w-auto max-w-md mx-auto">
+                <div className="w-full h-40 overflow-hidden">
+                  <img
+                    className="w-full h-full object-cover"
+                    src="https://media.istockphoto.com/id/1149958175/photo/modern-skyscrapers-in-midtown-manhattan.webp?b=1&s=170667a&w=0&k=20&c=GGpQK-UrXnhe25zSk4yNixalZfZoYGcOX-Q65zx5wkA="
+                    alt="Agence"
+                  />
                 </div>
+                <div className="p-6">
+                  <h2 className="text-xl font-bold text-center mb-4">Realtor Information</h2>
+                  {property.realtor && (
+                    <div className="space-y-3">
+                      <div className="flex items-center">
+                        <FontAwesomeIcon icon={faUser} className="mr-2" />
+                        <span>{property.realtor.first_name} {property.realtor.last_name}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <FontAwesomeIcon icon={faPhone} className="mr-2" />
+                        <span>{property.realtor.phone}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
+                        <span><a href={`mailto:${property.realtor.email}`}>{property.realtor.email}</a></span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
