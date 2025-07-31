@@ -34,7 +34,7 @@ services:
     container_name: realestate_nginx_proxy
     volumes:
       - ./nginx_realestate/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /var/www/realestate/media:/media:ro
+      - /var/www/realestate/backend/media:/media:ro
       - static_volume:/static:ro
     ports:
       - "8081:80"
