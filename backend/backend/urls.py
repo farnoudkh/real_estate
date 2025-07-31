@@ -21,10 +21,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include("users.urls")),
-    path('api/auth/', include("knox.urls")),
-    path('api/realtors/', include("realtors.urls")),
-    path('api/listings/', include("listings.urls")),
+    path('api/realestate/users/', include("users.urls")),
+    path('api/realestate/auth/', include("knox.urls")),
+    path('api/realestate/realtors/', include("realtors.urls")),
+    path('api/realestate/listings/', include("listings.urls")),
 
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
