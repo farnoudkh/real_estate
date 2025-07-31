@@ -181,3 +181,5 @@ LOGGING = {
         },
     },
 }
+
+FORCE_SCRIPT_NAME = '/realestate'
