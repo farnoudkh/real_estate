@@ -73,7 +73,8 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
-    'users.auth_backend.EmailAuthBackend'
+    'users.auth_backend.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -182,9 +183,6 @@ LOGGING = {
     },
 }
 
-FORCE_SCRIPT_NAME = '/realestate'
-
 CSRF_TRUSTED_ORIGINS = [
     'https://farnoudkhaboshan.com',
-    'https://farnoudkhaboshan.com/realestate',
 ]
