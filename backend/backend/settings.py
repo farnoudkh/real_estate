@@ -183,3 +183,8 @@ LOGGING = {
 }
 
 FORCE_SCRIPT_NAME = '/realestate'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://farnoudkhaboshan.com',
+    'https://farnoudkhaboshan.com/realestate',
+]
