@@ -114,7 +114,7 @@ const PropertyDetail = () => {
             <div className="md:col-span-2">
               <h2 className="text-2xl font-semibold text-[rgb(223,198,103)] mb-2">{property.title}</h2>
               <p className="text-sm text-gray-400 mb-4">
-                {property.address}, {property.zip_code} {property.city} • Publié le : {property.publish_date}
+                {property.address}, {property.zip_code} {property.city} • Publish on : {property.publish_date}
               </p>
               <p className="text-white leading-relaxed">{property.description}</p>
 
