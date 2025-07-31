@@ -34,6 +34,7 @@ DEBUG = env.bool("DEBUG", default=False)
 
 if ENV == 'production':
     ALLOWED_HOSTS = ['farnoudkhaboshan.com', 'www.farnoudkhaboshan.com']
+    FORCE_SCRIPT_NAME = '/realestate'
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -192,5 +193,5 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_PATH = '/realestate/'
 SESSION_COOKIE_PATH = '/realestate/'
-FORCE_SCRIPT_NAME = '/realestate'
+
 
