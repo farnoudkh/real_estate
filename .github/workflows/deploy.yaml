@@ -15,21 +15,22 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: 📝 Create .env.prod for backend
+      - name: 📝 Create .env.production for backend
         run: |
           mkdir -p backend
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > backend/.env.prod
-          echo "DEBUG=False" >> backend/.env.prod
-          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> backend/.env.prod
-          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> backend/.env.prod
-          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> backend/.env.prod
-          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> backend/.env.prod
-          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> backend/.env.prod
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > backend/.env.production
+          echo "DEBUG=False" >> backend/.env.production
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> backend/.env.production
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> backend/.env.production
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> backend/.env.production
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> backend/.env.production
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> backend/.env.production
 
-      - name: 📝 Create .env.prod for frontend (Vite)
+      - name: 📝 Create .env.production for frontend (Vite)
         run: |
           mkdir -p frontend
-          echo "VITE_API_BASE_URL=/realestate/api/" > frontend/.env.prod
+          echo "VITE_API_BASE_URL=/realestate/api/" > frontend/.env.production
+          echo "VITE_MEDIA_BASE_URL=/media/" >> frontend/.env.production
 
       - name: 🧱 Build Vite frontend
         run: |

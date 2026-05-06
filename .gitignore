@@ -17,10 +17,9 @@ listings/migrations/
 
 db.sqlite3
 media
-backend/.env
-
 **/.DS_Store
 **/__pycache__/*
 
 **/.env
+**/.env.*
 backend/users/__pycache__/
