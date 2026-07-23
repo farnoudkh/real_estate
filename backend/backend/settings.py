@@ -33,7 +33,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 if ENV == 'production':
-    ALLOWED_HOSTS = ['farnoudkhaboshan.com', 'www.farnoudkhaboshan.com']
+    ALLOWED_HOSTS = ['farnoudkhaboshan.com', 'www.farnoudkhaboshan.com', '93.127.163.133']
     FORCE_SCRIPT_NAME = '/realestate'
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
